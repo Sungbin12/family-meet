@@ -114,6 +114,7 @@
   </div>
 
   <script>
+    
     let selectedVote = '';
 
     function selectVote(vote) {
@@ -146,24 +147,20 @@
 
       const agendaTitle = document.querySelector('h1').textContent;
 
-      fetch('https://script.google.com/macros/s/AKfycbzIzJN0y95dcXYZRRXLbAUlmc2ELb6vpPDkBD6it6nWPSvkn5mGLChDHR79qO6EC53tpA/exec', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'vote=' + encodeURIComponent(selectedVote) + '&agenda=' + encodeURIComponent(agendaTitle)
-      })
-      .then(response => {
-        if (response.ok) {
+      // ✅ GET 방식으로 변경하여 CORS 오류 방지
+      const url = 'https://script.google.com/macros/s/AKfycbzNh5yiaOY9HocLroas_wENV9_zf5Gtnq9bYu3-Shw4mAYUwG4FWXtsuO4xyoA68evJog/exec'
+                + '?vote=' + encodeURIComponent(selectedVote)
+                + '&agenda=' + encodeURIComponent(agendaTitle);
+
+      fetch(url)
+        .then(response => response.text())
+        .then(result => {
           alert('투표가 전송되었습니다.');
-          window.location.href = './';
-        } else {
-          alert('전송 실패. 다시 시도해주세요.');
-        }
-      })
-      .catch(() => {
-        alert('네트워크 오류가 발생했습니다.');
-      });
+          window.location.href = './';  // 원하는 이동 링크로 수정 가능
+        })
+        .catch(() => {
+          alert('네트워크 오류가 발생했습니다.');
+        });
     }
   </script>
 
