@@ -5,10 +5,10 @@ function login() {
     const message = document.getElementById("message");
   
     const users = [
-      { username: "jinwook392", password: "mom1234", pin: "1111", name: "정진욱" },
-      { username: "intae843", password: "dad1234", pin: "2222", name: "박인태" },
-      { username: "sungbin", password: "son1234", pin: "3333", name: "박성빈" },
-      { username: "hyobin583", password: "dau1234", pin: "4444", name: "박효빈" }
+      { username: "fj2kdn", password: "-", pin: "-", name: "---" },
+      { username: "20fnk", password: "-", pin: "-", name: "---" },
+      { username: "admin", password: "-", pin: "-", name: "---" },
+      { username: "lfnd3", password: "-", pin: "-", name: "---" }
     ];
   
     const matchedUser = users.find(user =>
