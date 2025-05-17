@@ -1,0 +1,79 @@
+body {
+    font-family: 'Pretendard Variable', sans-serif;
+    background: linear-gradient(to right, #e8f0fe, #ffffff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  .container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 320px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .container:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.15);
+  }
+  
+  h1 {
+    font-size: 24px;
+    margin-bottom: 30px;
+    color: #333;
+  }
+  
+  input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 14px;
+    background-color: #f9f9f9;
+    transition: border 0.2s ease;
+  }
+  
+  input:focus {
+    border-color: #4CAF50;
+    outline: none;
+    background-color: #fff;
+  }
+  
+  button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  button:hover {
+    background-color: #43a047;
+  }
+  
+  #message {
+    margin-top: 15px;
+    font-size: 14px;
+  }
+  @media screen and (max-width: 768px) {
+            body {
+                padding-left: 15px;  /* 모바일 화면에서 좌측 여백 */
+                padding-right: 15px; /* 모바일 화면에서 우측 여백 */
+            }
+
+            .container {
+                width: 100%; /* 모바일에서 너비 100%로 설정 */
+            }
+        }
