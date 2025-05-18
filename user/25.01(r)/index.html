@@ -2,9 +2,36 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>가족회의의 1월 정기회</title>
+  <title>가족회의 1월 정기회</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+  <script>
+    function isLoggedIn() {
+      const cookies = document.cookie.split(";").map(c => c.trim());
+      return cookies.some(c => c.startsWith("loginUser_"));
+    }
+
+    if (!isLoggedIn()) {
+      alert("올바르지 않은 경로로 접속하셨습니다.");
+      window.location.href = "../../../../../../index.html";
+    }
+
+    // 안건 링크 클릭 시, 같은 tr의 안건번호를 읽어 html로 이동
+    document.addEventListener("DOMContentLoaded", () => {
+      const agendaLinks = document.querySelectorAll(".agenda-link");
+
+      agendaLinks.forEach(link => {
+        link.addEventListener("click", event => {
+          event.preventDefault();
+          const tr = link.closest("tr");
+          const agendaNumber = tr.querySelector("td:nth-child(2)")?.textContent?.trim();
+          if (agendaNumber) {
+            window.location.href = `${agendaNumber}`;
+          }
+        });
+      });
+    });
+  </script>
   <style>
     body {
       font-family: 'Pretendard', sans-serif;
@@ -34,49 +61,26 @@
     }
     th:nth-child(1) { text-align: left; }
     th:nth-child(2) { text-align: right; }
-    th:nth-child(3) { text-align: right; }
 
     td:first-child {
       text-align: left;
     }
     td:nth-child(2) {
       text-align: right;
-      padding-right: 15px;
-    }
-    td:nth-child(3) {
-      text-align: right;
-      width: 120px;
+      padding-right: 10px;
     }
     a.agenda-link {
       text-decoration: none;
       color: #000;
       font-weight: 500;
+      cursor: pointer;
     }
 
-    .vote-button {
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 5px;
-      text-decoration: none;
-      font-size: 14px;
-    }
-    .color-gray { background-color: #a3a3a3; }
-    .color-default { background-color: #25b7d3; }
-    .color-blue    { background-color: #1E90FF; }
-    .color-green   { background-color: #28a745; }
-    .color-red     { background-color: #dc3545; }
-    .color-purple  { background-color: #6f42c1; }
-    .color-orange  { background-color: #fd7e14; }
-
-    .vote-button:hover {
-      opacity: 0.9;
-    }
   </style>
 </head>
 <body>
 
-  <h2>가족회의의 1월 정기회</h2>
+  <h2 style='line-height:1%'>가족회의 1월 정기회</h2>
   <div class="date-note">(2025-01-1)</div>
 
   <table>
@@ -84,37 +88,56 @@
       <tr>
         <th>안건</th>
         <th>안건 번호</th>
-        <th>투표 여부</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><a href="#안건1" class="agenda-link">안건</a></td>
+        <td><a href="#" class="agenda-link">안건</a></td>
         <td>2025-01-01</td>
-        <td><a href="/vote/2025-01-01" class="vote-button color-gray">투표하기</a></td>
       </tr>
       <tr>
-        <td><a href="#안건2" class="agenda-link">안건</a></td>
+        <td><a href="#" class="agenda-link">안건</a></td>
         <td>2025-01-02</td>
-        <td><a href="/vote/2025-01-02" class="vote-button color-blue">투표하기</a></td>
       </tr>
       <tr>
-        <td><a href="#안건3" class="agenda-link">안건</a></td>
+        <td><a href="#" class="agenda-link">안건</a></td>
         <td>2025-01-03</td>
-        <td><a href="/vote/2025-01-03" class="vote-button color-green">투표하기</a></td>
       </tr>
       <tr>
-        <td><a href="#안건4" class="agenda-link">안건</a></td>
+        <td><a href="#" class="agenda-link">안건</a></td>
         <td>2025-01-04</td>
-        <td><a href="/vote/2025-01-04" class="vote-button color-red">투표하기</a></td>
       </tr>
       <tr>
-        <td><a href="#안건5" class="agenda-link">안건</a></td>
+        <td><a href="#" class="agenda-link">안건</a></td>
         <td>2025-01-05</td>
-        <td><a href="/vote/2025-01-05" class="vote-button color-purple">투표하기</a></td>
       </tr>
     </tbody>
   </table>
+
+<!-- 버튼 (표 아래에 위치시킬 것) -->
+<div style="text-align: center; margin-top: 30px;">
+  <button class="simple-button" onclick="window.location.href='../'">뒤로가기</button>
+</div>
+
+<style>
+  .simple-button {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 15px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #000;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.2s ease;
+  }
+
+  .simple-button:hover {
+    background-color: #e4e4e4;
+  }
+</style>
+
 
 </body>
 </html>

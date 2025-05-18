@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>가족회의 시스템</title>
+  <!-- Pretendard font -->
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css" rel="stylesheet" />
+  <script>
+  // 로그인된 사용자 쿠키가 있는지 확인
+  function isLoggedIn() {
+    const cookies = document.cookie.split("; ");
+    return cookies.some(c => c.startsWith("loginUser_"));
+  }
+
+  // 로그인 상태 확인 후, 아니면 경고 후 리다이렉트
+  if (!isLoggedIn()) {
+    alert("올바르지 않은 경로로 접속하셨습니다.");
+    window.location.href = "../../../../../../index.html";
+  }
+</script>
+  <style>
+    body {
+      font-family: 'Pretendard Variable', sans-serif;
+      margin: 30px;
+      background-color: #fdfdfd;
+    }
+    h1 {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .meta {
+      margin-top: 10px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 10px;
+      font-size: 16px;
+      color: #333;
+    }
+    .image {
+      text-align: center;
+      margin: 40px 0;
+    }
+    .image img {
+      max-width: 100%;
+      height: auto;
+    }
+    .button-container {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .vote-button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border: 1px solid black;
+      background-color: white;
+      border-radius: 8px;
+    }
+    .attachment {
+      border: 1px solid black;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 16px;
+    }
+    .attachment a {
+      text-decoration: none;
+      color: black;
+    }
+  </style>
+</head>
+<body>
+  <h1>안건</h1>
+  <div class="meta">
+    안건번호: 2025.01.01. &nbsp;|&nbsp; 정기/임시회: 정기회
+  </div>
+
+  <div class="image">
+    <img src="a729ae8a-6366-4b89-9bd0-4fcda52fb2e6.png" alt="이미지" />
+  </div>
+
+  <div class="button-container">
+    <button class="vote-button" onclick="location.href='vote.html'">투표하기</button>
+  </div>
+
+  <div class="attachment">
+    첨부파일 | <a href="a729ae8a-6366-4b89-9bd0-4fcda52fb2e6.png" download>링크</a>
+  </div>
+  <div style="text-align: center; margin-top: 30px;">
+  <button class="simple-button" onclick="window.location.href='../'">뒤로가기</button>
+</div>
+
+<style>
+  .simple-button {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 15px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #000;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.2s ease;
+  }
+
+  .simple-button:hover {
+    background-color: #e4e4e4;
+  }
+</style>
+</body>
+</html>

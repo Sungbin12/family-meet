@@ -2,52 +2,190 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>가족회의 시스템</title>
-  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: 'Pretendard Variable', sans-serif;
-      background-color: #fefefe;
+      font-family: 'Pretendard', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 2rem;
+      background-color: #f9fafb;
+      color: #111;
       text-align: center;
-      padding: 80px;
     }
 
     h1 {
-      font-size: 28px;
-      color: #333;
+      font-size: 2.5rem;
+      font-weight: 900;
+      margin: 1%;
+      line-height: 100%;
+      color: #111827;
+      word-break: keep-all;
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 1%;
+      line-height: 1;
+      color: #374151;
+      word-break: keep-all;
+    }
+
+    p {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: rem;
+      line-height: 100%;
+      color: #4b5563;
+      word-break: keep-all;
+    }
+
+    .button {
+      font-size: 1.1rem;
+      padding: 1rem 2rem;
+      margin: 1rem;
+      border: none;
+      border-radius: 0.75rem;
+      background-color: #111827;
+      color: #ffffff;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      text-decoration: none;
+      display: inline-block;
+      max-width: 90vw;
+    }
+
+    .button:hover {
+      background-color: #1f2937;
+      transform: translateY(-2px);
     }
 
     .logout {
-      margin-top: 20px;
-      font-size: 14px;
-      color: #888;
+      font-size: 1rem;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 0.6rem;
+      background-color: #e5e7eb;
+      color: #111827;
       cursor: pointer;
+      margin-top: 2rem;
+      transition: background-color 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     }
 
     .logout:hover {
-      color: #444;
+      background-color: #d1d5db;
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      h2 {
+        font-size: 1.3rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+
+      .button {
+        font-size: 1rem;
+        padding: 0.8rem 1.2rem;
+      }
+
+      .logout {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+      }
     }
   </style>
-</head>
-<body>
-  <h1 id="welcome">환영합니다!</h1>
-  <div class="logout" onclick="logout()">로그아웃</div>
 
   <script>
-    const name = localStorage.getItem("loginName");
-    if (name) {
-      document.getElementById("welcome").textContent = `${name}님 환영합니다!`;
-    } else {
+    // 로그인된 사용자 쿠키가 있는지 확인
+    function isLoggedIn() {
+      const cookies = document.cookie.split("; ");
+      return cookies.some(c => c.startsWith("loginUser_"));
+    }
+
+    // 로그인 상태 확인 후, 아니면 경고 후 리다이렉트
+    if (!isLoggedIn()) {
       alert("올바르지 않은 경로로 접속하셨습니다.");
+      window.location.href = "../../../../../../index.html";
+    }
+  </script>
+</head>
+
+<body>
+  <h1>가족회의 시스템에 오신 걸 환영합니다</h1>
+  <h2>Welcome to the family meeting system</h2>
+
+  <p id="timeDisplay">현재 시각은 로딩 중입니다</p>
+
+  <a href="25.01(r)" class="button">2025년 1월 1일 정기회<br>회의 목록</a>
+
+  <button class="logout" onclick="logout()">로그아웃</button>
+  
+
+  <script>
+    function logout() {
+      localStorage.removeItem("loginName");
+      const cookies = document.cookie.split("; ");
+      cookies.forEach(cookie => {
+        if (cookie.startsWith("loginUser_")) {
+          const cookieName = cookie.split("=")[0];
+          document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+        }
+      });
       window.location.href = "../index.html";
     }
 
-    function logout() {
-      localStorage.removeItem("loginName");
-      // 쿠키도 삭제하려면 이름을 알아야 하므로 모든 쿠키 제거는 생략 가능
-      window.location.href = "../index.html";
+    // 서버에서 전달된 현재 시간 (예: 서버에서 렌더링하거나 API로 주입)
+    const serverTime = new Date("2025-05-17T14:30:00Z"); // 서버에서 동적으로 설정
+
+    const clientTimeAtLoad = new Date();
+
+    function updateTime() {
+      const nowClient = new Date();
+      const elapsed = nowClient - clientTimeAtLoad;
+      const nowServer = new Date(serverTime.getTime() + elapsed);
+
+      const year = nowServer.getFullYear();
+      const month = nowServer.getMonth() + 1;
+      const date = nowServer.getDate();
+      const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+      const day = dayNames[nowServer.getDay()];
+
+      let hours = nowServer.getHours();
+      const minutes = nowServer.getMinutes();
+      const seconds = nowServer.getSeconds();
+      const ampm = hours >= 12 ? '오후' : '오전';
+
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+
+      const pad = (n) => n.toString().padStart(2, '0');
+
+      const timeStr = `현재 시각은 ${year}년 ${month}월 ${date}일 ${day}요일, ${ampm} ${pad(hours)}시 ${pad(minutes)}분 ${pad(seconds)}초입니다.`;
+      document.getElementById('timeDisplay').textContent = timeStr;
     }
+
+    setInterval(updateTime, 1000);
+    updateTime();
   </script>
-<a href="25.01(r)/vote.html">테스트트</a>
 </body>
 </html>
