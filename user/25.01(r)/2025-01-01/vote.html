@@ -112,7 +112,7 @@
   <div class="notice">
     위 투표는 익명으로 진행되며, 보낸 시각은 기록됩니다.
   </div>
-
+<!--투표 전송 스크립트-->
   <script>
     
     let selectedVote = '';
@@ -163,6 +163,58 @@
         });
     }
   </script>
+  <!--중복 투표 방지 스크립트-->
+<script>
+  function setCookie(name, value, days) {
+    const expires = new Date(Date.now() + days * 864e5).toUTCString();
+    document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + expires + '; path=/';
+  }
+
+  function getCookie(name) {
+    return document.cookie
+      .split('; ')
+      .find(row => row.startsWith(name + '='))
+      ?.split('=')[1];
+  }
+
+  // ✅ alert 감지 후 쿠키 저장 & 이전 페이지로 이동
+  (function interceptVoteAlert() {
+    const originalAlert = window.alert;
+
+    window.alert = function (message) {
+      originalAlert(message);
+
+      if (message === '투표가 전송되었습니다.') {
+        const agendaTitle = document.querySelector('h1')?.textContent.trim();
+        if (!agendaTitle) return;
+
+        // ✅ 쿠키 저장 (삭제하지 않음)
+        setCookie('voteSent_' + agendaTitle, 'true', 7); // 7일 동안 유지
+
+        setTimeout(() => {
+          history.back();
+        }, 300);
+      }
+    };
+  })();
+
+  // ✅ 페이지 진입 시 쿠키 확인 → 있으면 alert 띄우고 이동 (삭제 X)
+  window.addEventListener('DOMContentLoaded', () => {
+    const agendaTitle = document.querySelector('h1')?.textContent.trim();
+    if (!agendaTitle) return;
+
+    const cookieExists = getCookie('voteSent_' + agendaTitle);
+
+    if (cookieExists) {
+      alert(`${agendaTitle}에 대한 투표가 이미 완료되었습니다.`);
+      window.location.href = './';
+    }
+  });
+</script>
+
+
+
+
 
 </body>
 </html>

@@ -37,4 +37,13 @@ function login() {
       message.textContent = "아이디, 비밀번호 또는 고유인증번호가 잘못되었습니다.";
     }
   }
-  
+
+
+function isLoggedIn() {
+  const cookies = document.cookie.split(";").map(c => c.trim());
+  return cookies.some(c => c.startsWith("loginUser_"));
+}
+
+if (isLoggedIn()) {
+  window.location.href = "/user"; // 쿠키가 있을 때 이동할 경로
+}

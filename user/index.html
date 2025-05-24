@@ -154,38 +154,31 @@
       window.location.href = "../index.html";
     }
 
-    // 서버에서 전달된 현재 시간 (예: 서버에서 렌더링하거나 API로 주입)
-    const serverTime = new Date("2025-05-17T14:30:00Z"); // 서버에서 동적으로 설정
-
-    const clientTimeAtLoad = new Date();
-
     function updateTime() {
-      const nowClient = new Date();
-      const elapsed = nowClient - clientTimeAtLoad;
-      const nowServer = new Date(serverTime.getTime() + elapsed);
+    const now = new Date();
 
-      const year = nowServer.getFullYear();
-      const month = nowServer.getMonth() + 1;
-      const date = nowServer.getDate();
-      const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
-      const day = dayNames[nowServer.getDay()];
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1;
+    const date = now.getDate();
+    const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+    const day = dayNames[now.getDay()];
 
-      let hours = nowServer.getHours();
-      const minutes = nowServer.getMinutes();
-      const seconds = nowServer.getSeconds();
-      const ampm = hours >= 12 ? '오후' : '오전';
+    let hours = now.getHours();
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+    const ampm = hours >= 12 ? '오후' : '오전';
 
-      hours = hours % 12;
-      hours = hours ? hours : 12;
+    hours = hours % 12;
+    hours = hours ? hours : 12;
 
-      const pad = (n) => n.toString().padStart(2, '0');
+    const pad = (n) => n.toString().padStart(2, '0');
 
-      const timeStr = `현재 시각은 ${year}년 ${month}월 ${date}일 ${day}요일, ${ampm} ${pad(hours)}시 ${pad(minutes)}분 ${pad(seconds)}초입니다.`;
-      document.getElementById('timeDisplay').textContent = timeStr;
-    }
+const timeStr = `현재 시각은 ${year}년 ${month}월 ${date}일(${day})<br>${ampm} ${hours}시 ${pad(minutes)}분 ${pad(seconds)}초입니다.`;
+    document.getElementById('timeDisplay').innerHTML = timeStr;
+  }
 
-    setInterval(updateTime, 1000);
-    updateTime();
+  setInterval(updateTime, 1000);
+  updateTime();
   </script>
 </body>
 </html>
