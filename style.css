@@ -16,6 +16,7 @@ body {
     text-align: center;
     width: 320px;
     transition: all 0.3s ease-in-out;
+     position: relative;
   }
   
   .container:hover {
@@ -30,7 +31,7 @@ body {
   }
   
   input {
-    width: 100%;
+    width: 90%;
     padding: 12px;
     margin-bottom: 15px;
     border: 1px solid #ddd;
@@ -67,6 +68,18 @@ body {
     margin-top: 15px;
     font-size: 14px;
   }
+  #verison {
+ position: absolute;
+  bottom: 20px;
+
+  left: 50%;
+  transform: translateX(-50%); /* p의 너비의 절반만큼 왼쪽으로 이동 */
+
+  font-size: 15px;
+  margin: 0;
+  text-align: center;
+  }
+
   @media screen and (max-width: 768px) {
             body {
                 padding-left: 15px;  /* 모바일 화면에서 좌측 여백 */

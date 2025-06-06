@@ -1,28 +1,32 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>가족회의 시스템:투표</title>
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/variable/pretendardvariable-dynamic-subset.css" rel="stylesheet" />
-<script>
-  // 로그인된 사용자 쿠키가 있는지 확인
-  function isLoggedIn() {
-    const cookies = document.cookie.split("; ");
-    return cookies.some(c => c.startsWith("loginUser_"));
-  }
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/variable/pretendardvariable-dynamic-subset.css"
+    rel="stylesheet"
+  />
+  <script>
+    // 로그인된 사용자 쿠키가 있는지 확인
+    function isLoggedIn() {
+      const cookies = document.cookie.split("; ");
+      return cookies.some((c) => c.startsWith("loginUser_"));
+    }
 
-  // 로그인 상태 확인 후, 아니면 경고 후 리다이렉트
-  if (!isLoggedIn()) {
-    alert("올바르지 않은 경로로 접속하셨습니다.");
-    window.location.href = "../../../../../../index.html";
-  }
-</script>
+    if (!isLoggedIn()) {
+      alert("올바르지 않은 경로로 접속하셨습니다.");
+      window.location.href = "../../../../../../index.html";
+    }
+  </script>
 
-  
   <style>
+    * {
+      font-family: "Pretendard Variable";
+    }
     body {
-      font-family: 'Pretendard Variable', sans-serif;
+      font-family: "Pretendard Variable", sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -32,24 +36,20 @@
       margin: 0;
       background-color: white;
     }
-
     h1 {
       font-size: 2em;
       color: gray;
     }
-
     h2 {
       font-size: 2.5em;
       margin-bottom: 40px;
       color: black;
     }
-
     .button-group {
       display: flex;
       gap: 30px;
       margin-bottom: 30px;
     }
-
     .vote-btn {
       padding: 20px 40px;
       font-size: 2em;
@@ -61,22 +61,24 @@
       opacity: 1;
       transform: scale(1);
     }
-
-    .agree { background-color: #363C84; }
-    .disagree { background-color: red; }
-    .abstain { background-color: gray; }
-
+    .agree {
+      background-color: #363c84;
+    }
+    .disagree {
+      background-color: red;
+    }
+    .abstain {
+      background-color: gray;
+    }
     .selected {
       transform: scale(1.2);
       opacity: 1;
       z-index: 1;
     }
-
     .dimmed {
       transform: scale(0.9);
       opacity: 0.4;
     }
-
     .submit-btn {
       padding: 15px 30px;
       font-size: 1.5em;
@@ -85,26 +87,81 @@
       border-radius: 10px;
       cursor: pointer;
     }
-
     .notice {
       margin-top: 40px;
       font-size: 1.1em;
       color: black;
     }
-
-
-
+    @media screen and (max-width: 768px) {
+      .button-group {
+        gap: 15px;
+        justify-content: center;
+      }
+      .vote-btn {
+        padding: 15px 25px;
+        font-size: 1.5em;
+      }
+      .submit-btn {
+        font-size: 1.2em;
+        padding: 12px 25px;
+      }
+      h1 {
+        font-size: 2em;
+      }
+      h2 {
+        font-size: 2em;
+        margin-bottom: 10px;
+      }
+      .notice {
+        font-size: 0.95em;
+        margin-top: 30px;
+      }
+    }
+    @keyframes loadingAnim {
+      0% {
+        left: -40px;
+      }
+      50% {
+        left: 80px;
+      }
+      100% {
+        left: -40px;
+      }
+    }
+    /* 강제 숨김 초기 상태 */
+    #loadingOverlay {
+      display: none !important;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(3px);
+      z-index: 9999;
+      color: white;
+      font-size: 1.5em;
+      font-weight: 600;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
   </style>
 </head>
 <body>
-
-  <h1 style='line-height:1%'>'안건'</h1>
+  <h1>'안건'</h1>
   <h2>에 대한 투표 해주십시오.</h2>
 
   <div class="button-group">
-    <button class="vote-btn agree" id="agreeBtn" onclick="selectVote('찬성')">찬성</button>
-    <button class="vote-btn disagree" id="disagreeBtn" onclick="selectVote('반대')">반대</button>
-    <button class="vote-btn abstain" id="abstainBtn" onclick="selectVote('기권')">기권</button>
+    <button class="vote-btn agree" id="agreeBtn" onclick="selectVote('찬성')">
+      찬성
+    </button>
+    <button class="vote-btn disagree" id="disagreeBtn" onclick="selectVote('반대')">
+      반대
+    </button>
+    <button class="vote-btn abstain" id="abstainBtn" onclick="selectVote('기권')">
+      기권
+    </button>
   </div>
 
   <button class="submit-btn" onclick="submitVote()">전송</button>
@@ -112,110 +169,139 @@
   <div class="notice">
     위 투표는 익명으로 진행되며, 보낸 시각은 기록됩니다.
   </div>
-<!--투표 전송 스크립트-->
+
+  <div id="loadingOverlay">
+    <div>투표 전송 중입니다</div>
+    <div style="margin-top: 20px">
+      <div
+        style="
+          width: 80px;
+          height: 16px;
+          background: #ccc;
+          border-radius: 8px;
+          overflow: hidden;
+          position: relative;
+        "
+      >
+        <div
+          id="loadingBar"
+          style="
+            position: absolute;
+            left: -40px;
+            width: 40px;
+            height: 16px;
+            background: linear-gradient(90deg, #4a90e2, #357abd);
+            border-radius: 8px;
+            animation: loadingAnim 1.2s infinite;
+          "
+        ></div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    
-    let selectedVote = '';
+    let selectedVote = "";
 
     function selectVote(vote) {
       selectedVote = vote;
 
       const buttons = {
-        '찬성': document.getElementById('agreeBtn'),
-        '반대': document.getElementById('disagreeBtn'),
-        '기권': document.getElementById('abstainBtn')
+        찬성: document.getElementById("agreeBtn"),
+        반대: document.getElementById("disagreeBtn"),
+        기권: document.getElementById("abstainBtn"),
       };
 
-      Object.values(buttons).forEach(btn => {
-        btn.classList.remove('selected', 'dimmed');
+      Object.values(buttons).forEach((btn) => {
+        btn.classList.remove("selected", "dimmed");
       });
 
       Object.entries(buttons).forEach(([key, btn]) => {
         if (key === vote) {
-          btn.classList.add('selected');
+          btn.classList.add("selected");
         } else {
-          btn.classList.add('dimmed');
+          btn.classList.add("dimmed");
         }
       });
     }
 
     function submitVote() {
       if (!selectedVote) {
-        alert('투표 항목을 선택해 주세요.');
+        alert("투표 항목을 선택해 주세요.");
         return;
       }
 
-      const agendaTitle = document.querySelector('h1').textContent;
+      const loadingOverlay = document.getElementById("loadingOverlay");
+      loadingOverlay.style.setProperty("display", "flex", "important");
 
-      // ✅ GET 방식으로 변경하여 CORS 오류 방지
-      const url = 'https://script.google.com/macros/s/AKfycbzNh5yiaOY9HocLroas_wENV9_zf5Gtnq9bYu3-Shw4mAYUwG4FWXtsuO4xyoA68evJog/exec'
-                + '?vote=' + encodeURIComponent(selectedVote)
-                + '&agenda=' + encodeURIComponent(agendaTitle);
+      const agendaTitle = document.querySelector("h1").textContent;
+
+      const url =
+        "https://script.google.com/macros/s/AKfycbzNh5yiaOY9HocLroas_wENV9_zf5Gtnq9bYu3-Shw4mAYUwG4FWXtsuO4xyoA68evJog/exec" +
+        "?vote=" +
+        encodeURIComponent(selectedVote) +
+        "&agenda=" +
+        encodeURIComponent(agendaTitle);
 
       fetch(url)
-        .then(response => response.text())
-        .then(result => {
-          alert('투표가 전송되었습니다.');
-          window.location.href = './';  // 원하는 이동 링크로 수정 가능
+        .then((response) => response.text())
+        .then((result) => {
+          loadingOverlay.style.setProperty("display", "none", "important");
+
+          alert("투표가 전송되었습니다.");
+          window.location.href = "./"; // 원하는 이동 링크로 수정 가능
         })
         .catch(() => {
-          alert('네트워크 오류가 발생했습니다.');
+          loadingOverlay.style.setProperty("display", "none", "important");
+
+          alert("네트워크 오류가 발생했습니다.");
         });
     }
   </script>
-  <!--중복 투표 방지 스크립트-->
-<script>
-  function setCookie(name, value, days) {
-    const expires = new Date(Date.now() + days * 864e5).toUTCString();
-    document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + expires + '; path=/';
-  }
 
-  function getCookie(name) {
-    return document.cookie
-      .split('; ')
-      .find(row => row.startsWith(name + '='))
-      ?.split('=')[1];
-  }
-
-  // ✅ alert 감지 후 쿠키 저장 & 이전 페이지로 이동
-  (function interceptVoteAlert() {
-    const originalAlert = window.alert;
-
-    window.alert = function (message) {
-      originalAlert(message);
-
-      if (message === '투표가 전송되었습니다.') {
-        const agendaTitle = document.querySelector('h1')?.textContent.trim();
-        if (!agendaTitle) return;
-
-        // ✅ 쿠키 저장 (삭제하지 않음)
-        setCookie('voteSent_' + agendaTitle, 'true', 7); // 7일 동안 유지
-
-        setTimeout(() => {
-          history.back();
-        }, 300);
-      }
-    };
-  })();
-
-  // ✅ 페이지 진입 시 쿠키 확인 → 있으면 alert 띄우고 이동 (삭제 X)
-  window.addEventListener('DOMContentLoaded', () => {
-    const agendaTitle = document.querySelector('h1')?.textContent.trim();
-    if (!agendaTitle) return;
-
-    const cookieExists = getCookie('voteSent_' + agendaTitle);
-
-    if (cookieExists) {
-      alert(`${agendaTitle}에 대한 투표가 이미 완료되었습니다.`);
-      window.location.href = './';
+  <script>
+    function setCookie(name, value, days) {
+      const expires = new Date(Date.now() + days * 864e5).toUTCString();
+      document.cookie =
+        name + "=" + encodeURIComponent(value) + "; expires=" + expires + "; path=/";
     }
-  });
-</script>
 
+    function getCookie(name) {
+      return document.cookie
+        .split("; ")
+        .find((row) => row.startsWith(name + "="))
+        ?.split("=")[1];
+    }
 
+    (function interceptVoteAlert() {
+      const originalAlert = window.alert;
 
+      window.alert = function (message) {
+        originalAlert(message);
 
+        if (message === "투표가 전송되었습니다.") {
+          const agendaTitle = document.querySelector("h1")?.textContent.trim();
+          if (!agendaTitle) return;
 
+          setCookie("voteSent_" + agendaTitle, "true", 7);
+
+          setTimeout(() => {
+            history.back();
+          }, 300);
+        }
+      };
+    })();
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const agendaTitle = document.querySelector("h1")?.textContent.trim();
+      if (!agendaTitle) return;
+
+      const cookieExists = getCookie("voteSent_" + agendaTitle);
+
+      if (cookieExists) {
+        alert(`${agendaTitle}에 대한 투표가 이미 완료되었습니다.`);
+        window.location.href = "./";
+      }
+    });
+  </script>
 </body>
 </html>
-
